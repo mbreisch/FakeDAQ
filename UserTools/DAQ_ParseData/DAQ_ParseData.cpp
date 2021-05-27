@@ -40,7 +40,7 @@ bool DAQ_ParseData::Execute(){
 			d.close();
 		  
 			//fill ParsedStream with vectors from data
-		  	/*
+		  	
 			retval = getParsedData(m_data->TCS.PsecClassStore[i].RawWaveform);
 			if(retval!=0)
 			{
@@ -53,7 +53,7 @@ bool DAQ_ParseData::Execute(){
 			}
 			m_data->TCS.ParsedDataStream.insert(data.begin(),data.end());
 			m_data->TCS.ParsedMetaStream.insert(m_data->TCS.ParsedMetaStream.end(),meta.begin(),meta.end());
-			*/
+			
 	  }
   }
 	
