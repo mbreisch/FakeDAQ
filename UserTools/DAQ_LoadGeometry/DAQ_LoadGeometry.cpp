@@ -1,6 +1,6 @@
 #include "DAQ_LoadGeometry.h"
 
-DAQ_LoadGeometry::DAQ_LoadGeometry():Tool(),adet(nullptr),AnnieGeometry(nullptr),LAPPD_channel_count(0){}
+DAQ_LoadGeometry::DAQ_LoadGeometry():Tool(){}
 
 
 bool DAQ_LoadGeometry::Initialise(std::string configfile, DataModel &data){
