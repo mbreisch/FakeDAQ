@@ -1,0 +1,99 @@
+# General Parameters
+Nsamples 256
+SampleSize 100
+NChannels 60
+TrigChannel -1
+
+#LoadGeometry
+verbosity 0
+LAPPDChannelCount 60
+FACCMRDGeoFile ./configfiles/FakeDAQ/FullMRDGeometry.csv
+DetectorGeoFile ./configfiles/FakeDAQ/DetectorGeometrySpecs.csv
+LAPPDGeoFile ./configfiles/FakeDAQ/LAPPDGeometry.csv
+TankPMTGeoFile ./configfiles/FakeDAQ/FullTankPMTGeometry.csv
+
+#PSECReadIn
+PSECReadInVerbosity 0
+RawDataOutpuWavLabel  RawLAPPDData
+PSECinputfile ../Data/2021-01-07/975V_perMCP_trigspare/all.txt
+DoPedSubtraction 1
+Nboards 2
+Pedinputfile1 PEDS_ACDC_board0.txt
+Pedinputfile2 PEDS_ACDC_board1.txt
+
+#LAPPDReorderData
+ReorderInputWavLabel RawLAPPDData
+ReorderOutputWavLabel LAPPDWaveforms
+DelayOffset 0
+
+#LAPPDBaselineSubtract
+BLSInputWavLabel LAPPDWaveforms
+LowBLfitrange 2;
+HiBLfitrange  19;
+BLSOutputWavLabel BLsubtractedLAPPDData
+
+#LAPPDFindT0
+FindT0Verbosity 0
+FindT0InputWavLabel BLsubtractedLAPPDData
+TrigEarlyCut 27
+TrigLateCut 40
+T0channelNo 1005
+T0signalmax 100.
+T0signalthreshold 40.
+T0offset  58
+FindT0OutputWavLabel AlignedLAPPDData
+
+#LAPPDFilter
+RawFilterInputWavLabel LAPPDWaveforms
+#BLSFilterInputWavLabel BLsubtractedLAPPDData
+#BLSFilterInputWavLabel AlignedLAPPDData
+BLSFilterInputWavLabel ABLSLAPPDData
+doFilter false
+CutoffFrequency 500000000
+
+#LAPPDIntegratePulse
+IntegStrip1 11
+IntegStrip2 -1
+IntegStrip3 -1
+IntegStrip4 -1
+IntegLow  4500
+IntegHi 9000
+
+#LAPPDFindPeak
+FindPeakVerbosity 0
+FiltPeakInputWavLabel FiltLAPPDData
+RawPeakInputWavLabel LAPPDWaveforms
+BLSPeakInputWavLabel AlignedLAPPDData
+TotThreshold 3.0
+MinimumTot 1000.
+Deltat 100.
+
+# LAPPDcfd
+CFDVerbosity 0
+FiltCFDInputWavLabel FiltLAPPDData
+RawCFDInputWavLabel LAPPDWaveforms
+BLSCFDInputWavLabel AlignedLAPPDData
+Fraction_CFD 0.15
+
+#LAPPDPlotWaveForms
+requireT0signal 1
+SaveByChannel false
+PlotWavLabel FiltLAPPDData
+outfile WaveForms_filt.root
+NHistos 200
+SaveSingleStrip 0
+SingleStripNo 11
+TrigNo 1005
+
+# LAPPDSave
+path ./testoutput
+
+#LAPPDCluster
+ClusterVerbosity  0
+SimpleClusterLabel SimpleRecoLAPPDPulses
+CFDClusterLabel CFDRecoLAPPDPulses
+HitOutLabel Clusters
+
+#LAPPDClusterTree
+ClusterTreeVerbosity  0
+getSimpleClusters 1
