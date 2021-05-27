@@ -11,27 +11,16 @@
 #include "BoostStore.h"
 #include "Logging.h"
 #include "Utilities.h"
-#include <Waveform.h>
 #include <zmq.hpp>
 
 //SC classes
-#include <Canbus.h>
 #include <SlowControlMonitor.h>
 //ACC classes
-#include <ACC.h>
-#include <Metadata.h>
 #include <PsecData.h>
 #include <Config.h>
 //DAQ classe
 #include <TempClassStore.h>
-#include <Geometry.h>
-#include <ChannelKey.h>
-#include <Detector.h>
-#include <Paddle.h>
-#include <Particle.h>
-#include <Channel.h>
-#include <Position.h>
-#include <Direction.h>
+#include <Waveform.h>
 
 
 /**
@@ -66,11 +55,8 @@ class DataModel {
   zmq::context_t* context; ///< ZMQ contex used for producing zmq sockets for inter thread,  process, or computer communication
 
   //SC
-  Canbus* CB;
   SlowControlMonitor SCMonitor;
   //ACC
-  stdUSB* usb;
-  ACC* acc;
   PsecData psec;
   Config conf;
   //DAQ
