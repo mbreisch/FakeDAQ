@@ -33,6 +33,7 @@ class DAQ_CreateAnnieEvent: public Tool {
 
   string path;
   string OutputWavLabel;
+  int countup;
 
 
 
