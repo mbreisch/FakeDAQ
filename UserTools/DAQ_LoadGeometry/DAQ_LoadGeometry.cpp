@@ -16,8 +16,6 @@ bool DAQ_LoadGeometry::Initialise(std::string configfile, DataModel &data){
   int recoeventexists = m_data->Stores.count("ANNIEEvent");
   if(recoeventexists==0) m_data->Stores["ANNIEEvent"] = new BoostStore(false,2);
 
-  //Load LAPPD Geometry Information
-  this->LoadLAPPDs();
 
   return true;
 }
