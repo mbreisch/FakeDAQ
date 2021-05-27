@@ -5,7 +5,6 @@
 #include <iostream>
 
 #include "Tool.h"
-#include "Geometry.h"
 #include <boost/algorithm/string.hpp>
 
 class DAQ_LoadGeometry: public Tool {
