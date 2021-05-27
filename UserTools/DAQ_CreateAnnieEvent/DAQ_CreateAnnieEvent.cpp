@@ -42,8 +42,6 @@ bool DAQ_CreateAnnieEvent::Execute(){
 	std::cout << "7" << std::endl;	
 	m_data->Stores["ANNIEEvent"]->Set("ACDCmetadata",m_data->TCS.ParsedMetaStream);
 	std::cout << "8" << std::endl;	
-	path += std::to_string(countup);
-	countup++;
 	m_data->Stores["ANNIEEvent"]->Save(path);
 	std::cout << "9" << std::endl;	
 	m_data->Stores["ANNIEEvent"]->Delete();
