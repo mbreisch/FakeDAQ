@@ -14,6 +14,7 @@ bool DAQ_CreateAnnieEvent::Initialise(std::string configfile, DataModel &data){
   if(!m_variables.Get("verbose",m_verbose)) m_verbose=1;
 
   m_variables.Get("path",path);
+  path+= getTime();
   m_variables.Get("OutputWavLabel",OutputWavLabel);
 
   return true;
@@ -42,7 +43,6 @@ bool DAQ_CreateAnnieEvent::Execute(){
 	std::cout << "7" << std::endl;	
 	m_data->Stores["ANNIEEvent"]->Set("ACDCmetadata",m_data->TCS.ParsedMetaStream);
 	std::cout << "8" << std::endl;	
-	path+= getTime();
 	m_data->Stores["ANNIEEvent"]->Save(path);
 	std::cout << "9" << std::endl;	
 	m_data->Stores["ANNIEEvent"]->Delete();
