@@ -33,7 +33,7 @@ class PsecData{
   unsigned int VersionNumber = 0x0001;
   vector<unsigned short> AccInfoFrame;
   vector<unsigned short> RawWaveform;
-  vector<unsigned short> AcdcInfoFrame;
+  //vector<unsigned short> AcdcInfoFrame;
   int FailedReadCounter=0;
 
   int readRetval;
@@ -48,7 +48,7 @@ class PsecData{
   ar & BoardIndex;
   ar & RawWaveform;
   ar & AccInfoFrame;
-  ar & AcdcInfoFrame;
+  //ar & AcdcInfoFrame;
   ar & FailedReadCounter;
   ar & errorcodes;
  }
