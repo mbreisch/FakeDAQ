@@ -75,61 +75,51 @@ bool DAQ_ParseData::Finalise(){
 	return true;
 }
 
-int DAQ_ParseData::getParsedMeta(std::vector<unsigned short> buffer, int i)
+int DAQ_ParseData::getParsedMeta(std::vector<unsigned short> buffer, int classindex)
 {
-	//make sure an acdc buffer has been
-	//filled. if not, there is nothing to be done.
+	//Catch empty buffers
 	if(buffer.size() == 0)
 	{
-		string err_msg = "You tried to parse ACDC data without pulling/setting an ACDC buffer";
+		std::cout << "You tried to parse ACDC data without pulling/setting an ACDC buffer" << std::endl;
 		return -1;
 	}
 
+ 	//Prepare the Metadata vector 
 	meta.clear();
-	int dist;
 
-	//byte that indicates the metadata of
-	//each psec chip is about to follow. 
+	//Helpers
+	int DistanceFromZero;
+	int chip_count = 0;
+
+	//Indicator words for the start/end of the metadata
 	const unsigned short startword = 0xBA11; 
+	unsigned short endword = 0xFACE; 
+    	unsigned short endoffile = 0x4321;
 
-	//to hold data temporarily. local to this function. 
-	//this is used to match to my old convention
-	//from the old software (which took a while just)
-	//to type out properly. 
-	//ac_info[chip][index in buffer]
-	map<int, vector<unsigned short>> ac_info;
+	//Empty metadata map for each Psec chip <PSEC #, vector with information>
+	map<int, vector<unsigned short>> PsecInfo;
 
-	//this is the header to the ACDC buffer that
-	//the ACC appends at the beginning, found in
-	//packetUSB.vhd. 
-	vector<unsigned short> cc_header_info;
+	//Empty trigger metadata map for each Psec chip <PSEC #, vector with trigger>
+	map<int, vector<unsigned short>> PsecTriggerInfo;
+	unsigned short CombinedTriggerRateCount;
 
-	
-	//indices of elements in the acdcBuffer
-	//that correspond to the byte ba11
+	//Empty vector with positions of aboves startword
 	vector<int> start_indices; 
-	vector<unsigned short>::iterator bit;
 
-	//loop through the data and find locations of startwords. 
-    //this can be made more efficient if you are having efficiency problems.
+	//Find the startwords and write them to the vector
+	vector<unsigned short>::iterator bit;
 	for(bit = buffer.begin(); bit != buffer.end(); ++bit)
 	{
-		//the iterator is at an element with startword value. 
-		//push the index (integer, from std::distance) to a vector. 
         if(*bit == startword)
         {
-        	dist= std::distance(buffer.begin(), bit);
-        	if(start_indices.size()!=0 && abs(dist-start_indices[start_indices.size()])<6*256)
-        	{
-          		continue;  
-        	}
-        	start_indices.push_back(dist);
+        	DistanceFromZero= std::distance(buffer.begin(), bit);
+        	start_indices.push_back(DistanceFromZero);
         }
 	}
 
-	
-    if(start_indices.size()>NUM_PSEC)
-    {
+	//Filter in cases where one of the start words is found in the metadata 
+	    if(start_indices.size()>NUM_PSEC)
+	    {
 		for(int k=0; k<(int)start_indices.size()-1; k++)
 		{
 		    if(start_indices[k+1]-start_indices[k]>6*256+14)
@@ -137,12 +127,13 @@ int DAQ_ParseData::getParsedMeta(std::vector<unsigned short> buffer, int i)
 			//nothing
 		    }else
 		    {
-				start_indices.erase(start_indices.begin()+(k+1));
-				k--;
+			start_indices.erase(start_indices.begin()+(k+1));
+			k--;
 		    }
 		}
-    }
+	    }
 	
+	//Last case emergency stop if metadata is still not quite right
 	if(start_indices.size() != NUM_PSEC)
 	{
         string fnnn = "meta-corrupt-psec-buffer.txt";
@@ -155,117 +146,65 @@ int DAQ_ParseData::getParsedMeta(std::vector<unsigned short> buffer, int i)
         return -2;
 	}
 
-	
-	
-
-	//loop through each startword index and store metadata. 
-	int chip_count = 0;
-	unsigned short endword = 0xFACE; //end of info buffer. 
-    unsigned short endoffile = 0x4321;
+	//Fill the psec info map
 	for(int i: start_indices)
 	{
-		//re-use buffer iterator from above
-		//to set starting point. 
-		bit = buffer.begin() + i + 1; //the 1 is to start one element after the startword
-		//while we are not at endword, 
-		//append elements to ac_info
-		vector<unsigned short> infobytes;
-		while(*bit != endword && *bit != endoffile && infobytes.size() < 20)
+		//Write the first word after the startword
+		bit = buffer.begin() + (i+1);
+
+		//As long as the endword isn't reached copy metadata words into a vector and add to map
+		vector<unsigned short> InfoWord;
+		while(*bit != endword && *bit != endoffile && InfoWord.size() < 14)
 		{
-			infobytes.push_back(*bit);
+			InfoWord.push_back(*bit);
 			++bit;
 		}
-		ac_info.insert(pair<int, vector<unsigned short>>(chip_count, infobytes));
+		PsecInfo.insert(pair<int, vector<unsigned short>>(chip_count, InfoWord));
 		chip_count++;
 	}
 
-    map<int, unsigned short> trigger_info;
-    for(int ch=0; ch<NUM_CH; ch++)
-    {
-        bit = buffer.begin() + ch + start_indices[4]+15;
-        trigger_info[ch] = *bit;
-    }
-    //trigger_info.insert(pair<int, unsigned short>(ch, bit));
-    unsigned short combined_trigger = buffer[7792];
+	//Fill the psec trigger info map
+	for(int chip=0; chip<NUM_PSEC; chip++)
+	{
+	    for(int ch=0; ch<NUM_CH; ch++)
+	    {
+	    	//Find the trigger data at begin + last_metadata_start + 13_info_words + 1_end_word + 1 
+	        bit = buffer.begin() + start_indices[4] + 13 + 1 + 1 + ch + (chip*NUM_CH-1);
+	        PsecTriggerInfo[chip].push_back(*bit);
+	    }
+	}
 
-    meta.push_back(m_data->TCS.PsecClassStore[i].BoardIndex);
-    for(int i = 0; i < NUM_PSEC; i++)
-    {
-    	meta.push_back(ac_info[i][12]);//Info 13
-    }
-    for(int i = 0; i < NUM_PSEC; i++)
-    {
-    	meta.push_back(ac_info[i][4]);//Info 5
-    }
-    for(int i = 0; i < NUM_PSEC; i++)
-    {
-    	meta.push_back(ac_info[i][11]);//Info 12, later bit(31-16)
-    }
-    for(int i = 0; i < NUM_PSEC; i++)
-    {
-    	meta.push_back(ac_info[i][10]);//Info 11, later bit(15-0)
-    }
-    for(int i = 0; i < NUM_PSEC; i++)
-    {
-    	meta.push_back(ac_info[i][2]);//Info 3
-    }
-	meta.push_back(ac_info[0][8] & 0x7); // Info 9 PSEC0 bit(2-0)
-	meta.push_back(combined_trigger);
-	meta.push_back(ac_info[1][9]); //Info 10 PSEC1 later bit(31-16)
-    meta.push_back(ac_info[0][9]); //Info 10 PSEC0 later bit(15-0)
-    for(int i = 0; i < NUM_PSEC; i++)
-    {
-    	meta.push_back(ac_info[i][0]);//Info 1
-    }
-    for(int i = 0; i < NUM_PSEC; i++)
-    {
-    	meta.push_back(ac_info[i][1]);//Info 2
-    }
-    for(int ch=0; ch<NUM_CH; ch++)
-    {
-        meta.push_back(trigger_info[ch]);
-    }
-    for(int i = 0; i < NUM_PSEC; i++)
-    {
-        meta.push_back(ac_info[i][3]); //Info 4
-    }
+	//Fill the combined trigger
+	CombinedTriggerRateCount = buffer[7792];
 
-    meta.push_back(ac_info[0][8]); // Info 9 PSEC0 later bit(15-0)
-	meta.push_back(ac_info[1][8]); // Info 9 PSEC1 later bit(31-16)
-	meta.push_back(ac_info[2][8]); // Info 9 PSEC2 later bit(47-32)
-	meta.push_back(ac_info[3][8]); // Info 9 PSEC3 later bit(63-48)
-	meta.push_back((ac_info[3][5] & 0x4) >> 2); // Info 6, PSEC3 bit(2)
-	meta.push_back((ac_info[3][5] & 0x8) >> 3); // Info 6, PSEC3 bit(3)
-	meta.push_back(ac_info[1][5] & 0xF); //Info 6, PSEC1 bit(3-0)
-	meta.push_back((ac_info[3][5] & 0x7C0) >> 6); // Info 6, PSEC3 bit(10-6)
-	meta.push_back((ac_info[3][5] & 0x1) >> 4); // Info 6, PSEC3 bit(4)
-	meta.push_back((ac_info[3][5] & 0x20) >> 5); //Info 6, PSEC3 bit(5)
-	meta.push_back(ac_info[0][7] & 0xFFF); //Info 8 PSEC0 bit(11-0)
-	meta.push_back(ac_info[1][7] & 0xFFF); //Info 8 PSEC1 bit(11-0)
-	meta.push_back(ac_info[2][7] & 0xFFF); //Info 8 PSEC2 bit(11-0)
-	meta.push_back(ac_info[3][7] & 0xFFF); //Info 8 PSEC3 bit(11-0)
-	meta.push_back(ac_info[4][7] & 0xFFF); //Info 8 PSEC4 bit(11-0)
+	//----------------------------------------------------------
+	//Start the metadata parsing 
 
-	meta.push_back(ac_info[0][6]); //Info 7 PSEC0
-	meta.push_back(ac_info[1][6]); //Info 7 PSEC1
-	meta.push_back(ac_info[2][6]); //Info 7 PSEC2
-	meta.push_back(ac_info[3][6]); //Info 7 PSEC3
-	meta.push_back(ac_info[4][6]); //Info 7 PSEC4
-	meta.push_back(ac_info[3][5] & 0x1); // Info 6, PSEC3 bit(0)   
-	meta.push_back((ac_info[3][5] & 0x2) >> 1); // Info 6, PSEC3 bit(1)
-	meta.push_back((ac_info[1][5] & 0xFFF0) >> 4); //Info 6, PSEC1 bit(15-4)
-	meta.push_back(ac_info[2][5] & 0xFFF); //info 6, PSEC2 bit(11-0)
+	meta.push_back(m_data->TCS.PsecClassStore[classindex].BoardIndex);
+	for(int CHIP=0; CHIP<NUM_PSEC; CHIP++)
+	{
+		meta.push_back((0xCA00 | CHIP));
+		for(int INFOWORD=0; INFOWORD<13; INFOWORD++)
+		{
+			if(CHIP==4 && INFOWORD==7)
+			{
+				meta.push_back(((PsecInfo[CHIP][INFOWORD] & 0xf000)>>12));
+				meta.push_back(((PsecInfo[CHIP][INFOWORD] & 0x800)>>11));
+				meta.push_back(((PsecInfo[CHIP][INFOWORD] & 0x400)>>10));
+				meta.push_back((PsecInfo[CHIP][INFOWORD] & 0x3ff));
+			}else
+			{
+				meta.push_back(PsecInfo[CHIP][INFOWORD]);
+			}
+			
+		}
+		for(int TRIGGERWORD=0; TRIGGERWORD<6; TRIGGERWORD++)
+		{
+			meta.push_back(PsecTriggerInfo[CHIP][TRIGGERWORD]);
+		}
+	}
 
-    if(ac_info[0][5] != 0xEEEE)
-    {
-        std::cout << "PSEC frame data, trigger_info (0,0) at psec info 6 is not right" << std::endl;
-        return -3;
-    }
-    if(ac_info[4][5] != 0xEEEE)
-    {
-        std::cout << "PSEC frame data, trigger_info (0,4) at psec info 6 is not right" << std::endl;
-        return -4;
-    }
+	meta.push_back(CombinedTriggerRateCount);
 
 	return 0;
 }
