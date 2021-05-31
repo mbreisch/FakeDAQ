@@ -212,63 +212,56 @@ int DAQ_ParseData::getParsedMeta(std::vector<unsigned short> buffer, int classin
 
 int DAQ_ParseData::getParsedData(std::vector<unsigned short> buffer)
 {
-
-	//make sure an acdc buffer has been
-	//filled. if not, there is nothing to be done.
+	//Catch empty buffers
 	if(buffer.size() == 0)
 	{
-		string err_msg = "You tried to parse ACDC data without pulling/setting an ACDC buffer";
+		std::cout << "You tried to parse ACDC data without pulling/setting an ACDC buffer" << std::endl;
 		return -1;
 	}
 
-	//clear the data map prior.
-	data.clear();
+	//Prepare the Metadata vector 
+	meta.clear();
 
-	int dist;
+	//Helpers
+	int DistanceFromZero;
+	int channel_count = 0;
 
-	//byte that indicates the metadata of
-	//each psec chip is about to follow. 
+	//Indicator words for the start/end of the metadata
 	const unsigned short startword = 0xF005; 
 	unsigned short endword = 0xBA11;
 	unsigned short endoffile = 0x4321;
 
-	//indices of elements in the acdcBuffer
-	//that correspond to the byte ba11
+	//Empty vector with positions of aboves startword
 	vector<int> start_indices; 
-	vector<unsigned short>::iterator bit;
 
-	//loop through the data and find locations of startwords. 
-    //this can be made more efficient if you are having efficiency problems.
+	//Find the startwords and write them to the vector
+	vector<unsigned short>::iterator bit;
 	for(bit = buffer.begin(); bit != buffer.end(); ++bit)
 	{
-		//the iterator is at an element with startword value. 
-		//push the index (integer, from std::distance) to a vector. 
         if(*bit == startword)
         {
-        	dist= std::distance(buffer.begin(), bit);
-        	if(start_indices.size()!=0 && abs(dist-start_indices[start_indices.size()])<(6*256+15))
-        	{
-            	continue;        
-        	}
-        	start_indices.push_back(dist);
+        	DistanceFromZero= std::distance(buffer.begin(), bit);
+        	start_indices.push_back(DistanceFromZero);
         }
 	}
 
-	if(start_indices.size()>NUM_PSEC)
-	{
+	//Filter in cases where one of the start words is found in the metadata 
+    if(start_indices.size()>NUM_PSEC)
+    {
 		for(int k=0; k<(int)start_indices.size()-1; k++)
 		{
-			if(start_indices[k+1]-start_indices[k]>6*256+14)
-			{
+		    if(start_indices[k+1]-start_indices[k]>6*256+14)
+		    {
 				//nothing
-			}else
-			{
+		    }else
+		    {
 				start_indices.erase(start_indices.begin()+(k+1));
 				k--;
-			}
+		    }
 		}
-	}
-
+    }
+	
+	//Last case emergency stop if metadata is still not quite right
 	if(start_indices.size() != NUM_PSEC)
 	{
         string fnnn = "acdc-corrupt-psec-buffer.txt";
@@ -281,27 +274,26 @@ int DAQ_ParseData::getParsedData(std::vector<unsigned short> buffer)
         return -2;
 	}
 
+	//Fill data map
 	for(int i: start_indices)
 	{
-		//re-use buffer iterator from above
-		//to set starting point. 
-		bit = buffer.begin() + i + 1; //the 1 is to start one element after the startword
-		//while we are not at endword, 
-		//append elements to ac_info
-		vector<unsigned short> infobytes;
+		//Write the first word after the startword
+		bit = buffer.begin() + (i+1);
+
+		//As long as the endword isn't reached copy metadata words into a vector and add to map
+		vector<unsigned short> InfoWord;
 		while(*bit != endword && *bit != endoffile)
 		{
-			infobytes.push_back((unsigned short)*bit);
-			if(infobytes.size()==NUM_SAMP)
+			InfoWord.push_back((unsigned short)*bit);
+			if(InfoWord.size()==NUM_SAMP)
 			{
-				data[channel_count] = infobytes;
-				infobytes.clear();
+				data.insert(pair<int, vector<unsigned short>>(channel_count, InfoWord));
+				InfoWord.clear();
 				channel_count++;
 			}
 			++bit;
 		}	
 	}
-
 
 	return 0;
 }
