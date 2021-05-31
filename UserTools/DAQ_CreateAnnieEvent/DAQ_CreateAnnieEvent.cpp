@@ -38,13 +38,10 @@ bool DAQ_CreateAnnieEvent::Execute(){
 		LAPPDWaveforms.insert(LAPPDWaveforms.end(),std::pair<unsigned long, vector<Waveform<double>>>((unsigned long)it->first,VecTmpWave));
 	}	
 	  
-	std::cout << "6" << std::endl;	
 	m_data->Stores["ANNIEEvent"]->Set(OutputWavLabel,LAPPDWaveforms);
-	std::cout << "7" << std::endl;	
 	m_data->Stores["ANNIEEvent"]->Set("ACDCmetadata",m_data->TCS.ParsedMetaStream);
-	std::cout << "8" << std::endl;	
-	m_data->Stores["ANNIEEvent"]->Save(path);
-	std::cout << "9" << std::endl;	
+	m_data->Stores["ANNIEEvent"]->Save(path.c_str());
+	std::cout << "SAVED" << std::endl;	
 	m_data->Stores["ANNIEEvent"]->Delete();
 	m_data->TCS.ParsedDataStream.clear();
 	m_data->TCS.ParsedMetaStream.clear();
