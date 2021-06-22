@@ -51,6 +51,6 @@ bool DAQ_CreateAnnieEvent::Execute(){
 
 
 bool DAQ_CreateAnnieEvent::Finalise(){
-  
+  m_data->Stores["ANNIEEvent"]->Close();
   return true;
 }
