@@ -27,6 +27,7 @@ class TempClassStore{
   std::map<int, vector<unsigned short>> ParsedDataStream; // channelnumber|data
   std::vector<unsigned short> ParsedMetaStream; //meta
   std::vector<unsigned short> ParsedPpsStream; //pps
+  std::vector<unsigned short> ParsesAccStream; //Acc info frame
 
  private:
 
