@@ -33,8 +33,11 @@ class DAQ_CreateAnnieEvent: public Tool {
  private:
 
   string path;
-  string OutputWavLabel;
- 
+  string WaveformLabel;
+  string AccLabel;
+  string MetaLabel;
+  string PPSLabel;
+
  string getTime()
  {
      auto now = std::chrono::system_clock::now();
