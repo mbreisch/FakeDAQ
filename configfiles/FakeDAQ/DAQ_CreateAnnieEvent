@@ -1,3 +1,6 @@
 verbose 1
 path ./ANNIEEvent
-RawDataOutpuWavLabel  RawLAPPDData
+WaveformLabel  RawLAPPDData
+AccLabel AccInfoFrame
+MetaLabel Metadata
+PPSLabel PPSFrames
