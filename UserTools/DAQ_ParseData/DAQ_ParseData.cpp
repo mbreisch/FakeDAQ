@@ -42,19 +42,25 @@ bool DAQ_ParseData::Execute(){
 		  
 		//fill ParsedStream with vectors from data
 		retval = getParsedData(m_data->TCS.PsecClassStore[i].RawWaveform);
-		if(retval!=0)
+		if(retval == -3)
+		{
+			m_data->TCS.ParsedPpsStream.insert(m_data->TCS.ParsedPpsStream.end(),pps.begin(),pps.end());
+		}else if(retval == 0)
+		{
+			m_data->TCS.ParsedDataStream.insert(data.begin(),data.end());
+		
+			retval = getParsedMeta(m_data->TCS.PsecClassStore[i].RawWaveform,i);
+			if(retval!=0)
+			{
+				std::cout << "Meta parsing went wrong! " << retval << std::endl;
+			}
+			m_data->TCS.ParsedMetaStream.insert(m_data->TCS.ParsedMetaStream.end(),meta.begin(),meta.end());	
+		}else if(retval!=0 && retval!=-3)
 		{
 			std::cout << "Parsing went wrong! " << retval << std::endl;
 		}
-		m_data->TCS.ParsedDataStream.insert(data.begin(),data.end());
-		  
-		retval = getParsedMeta(m_data->TCS.PsecClassStore[i].RawWaveform,i);
-		if(retval!=0)
-		{
-			std::cout << "Meta parsing went wrong! " << retval << std::endl;
-		}
-		m_data->TCS.ParsedMetaStream.insert(m_data->TCS.ParsedMetaStream.end(),meta.begin(),meta.end());	
 	  }
+	  channel_count = 0;
   }
 	
   //Timing
@@ -232,7 +238,7 @@ int DAQ_ParseData::getParsedData(std::vector<unsigned short> buffer)
 
 	//Helpers
 	int DistanceFromZero;
-	int channel_count = 0;
+
 
 	//Indicator words for the start/end of the metadata
 	const unsigned short startword = 0xF005; 
@@ -246,16 +252,16 @@ int DAQ_ParseData::getParsedData(std::vector<unsigned short> buffer)
 	vector<unsigned short>::iterator bit;
 	for(bit = buffer.begin(); bit != buffer.end(); ++bit)
 	{
-        if(*bit == startword)
-        {
-        	DistanceFromZero= std::distance(buffer.begin(), bit);
-        	start_indices.push_back(DistanceFromZero);
-        }
+		if(*bit == startword)
+		{
+			DistanceFromZero= std::distance(buffer.begin(), bit);
+			start_indices.push_back(DistanceFromZero);
+		}
 	}
 
 	//Filter in cases where one of the start words is found in the metadata 
-    if(start_indices.size()>NUM_PSEC)
-    {
+	if(start_indices.size()>NUM_PSEC)
+	{
 		for(int k=0; k<(int)start_indices.size()-1; k++)
 		{
 		    if(start_indices[k+1]-start_indices[k]>6*256+14)
@@ -267,19 +273,19 @@ int DAQ_ParseData::getParsedData(std::vector<unsigned short> buffer)
 				k--;
 		    }
 		}
-    }
-	
+	}
+
 	//Last case emergency stop if metadata is still not quite right
 	if(start_indices.size() != NUM_PSEC)
 	{
-        string fnnn = "acdc-corrupt-psec-buffer.txt";
-        cout << "Printing to file : " << fnnn << endl;
-        ofstream cb(fnnn);
-        for(unsigned short k: buffer)
-        {
-            cb << hex << k << endl;
-        }
-        return -2;
+		string fnnn = "acdc-corrupt-psec-buffer.txt";
+		cout << "Printing to file : " << fnnn << endl;
+		ofstream cb(fnnn);
+		for(unsigned short k: buffer)
+		{
+		    cb << hex << k << endl;
+		}
+		return -2;
 	}
 
 	//Fill data map
