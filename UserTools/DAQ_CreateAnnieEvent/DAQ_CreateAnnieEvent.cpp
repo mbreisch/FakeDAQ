@@ -15,7 +15,10 @@ bool DAQ_CreateAnnieEvent::Initialise(std::string configfile, DataModel &data){
 
   m_variables.Get("path",path);
   path+= getTime();
-  m_variables.Get("OutputWavLabel",OutputWavLabel);
+  m_variables.Get("WaveformLabel",WaveformLabel);
+  m_variables.Get("AccLabel",AccLabel);
+  m_variables.Get("MetaLabel",MetaLabel);
+  m_variables.Get("PPSLabel",PPSLabel);
 
   return true;
 }
@@ -25,9 +28,12 @@ bool DAQ_CreateAnnieEvent::Execute(){
 
 	if(m_data->TCS.receiveFlag == 1)
 	{
+		//Prepare temporary vectors
 		std::map<unsigned long, vector<Waveform<double>>> LAPPDWaveforms;
 		Waveform<double> tmpWave;
 		vector<Waveform<double>> VecTmpWave;
+		
+		//Loop over data stream
 		for(std::map<int, vector<unsigned short>>::iterator it=m_data->TCS.ParsedDataStream.begin(); it!=m_data->TCS.ParsedDataStream.end(); ++it)
 		{
 			for(unsigned short k: it->second)
