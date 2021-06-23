@@ -5,4 +5,4 @@ DAQ_AccConfig DAQ_AccConfig  configfiles/FakeDAQ/DAQ_AccConfig
 DAQ_AccDataReceive DAQ_AccDataReceive configfiles/FakeDAQ/DAQ_AccDataReceive
 DAQ_ParseData DAQ_ParseData configfiles/FakeDAQ/DAQ_ParseData
 #PrintParsedData PrintParsedData configfiles/FakeDAQ/DummyToolConfig
-DAQ_CreateAnnieEvent DAQ_CreateAnnieEvent configfiles/FakeDAQ/DAQ_LoadGeometryConfig
+DAQ_CreateAnnieEvent DAQ_CreateAnnieEvent configfiles/FakeDAQ/DAQ_CreateAnnieEvent
