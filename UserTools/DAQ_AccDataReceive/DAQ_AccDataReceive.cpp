@@ -46,7 +46,7 @@ bool DAQ_AccDataReceive::Execute(){
   	m_data->TCS.PsecClassStore[rec_counter].Print();
   
 
-  	if((m_data->TCS.PsecClassStore[rec_counter].RawWaveform.size() == 7795 || m_data->TCS.PsecClassStore[rec_counter].RawWaveform.size() == 10) && m_data->TCS.PsecClassStore[rec_counter].AccInfoFrame.size() == 32)
+  	if((m_data->TCS.PsecClassStore[rec_counter].RawWaveform.size() == 7795 || m_data->TCS.PsecClassStore[rec_counter].RawWaveform.size() == 16) && m_data->TCS.PsecClassStore[rec_counter].AccInfoFrame.size() == 32)
   	{
   		m_data->TCS.receiveFlag = 1;
   	}
