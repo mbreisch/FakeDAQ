@@ -40,6 +40,7 @@ class DAQ_ParseData: public Tool {
   int channel_count=0;
   map<int, std::vector<unsigned short>> data;
   std::vector<unsigned short> meta;
+  std::vector<unsigned short> pps;
   boost::posix_time::ptime first;
 
 };
