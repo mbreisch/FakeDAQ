@@ -28,38 +28,40 @@ bool DAQ_ParseData::Execute(){
 
 	  for(int i=0; i<m_data->TCS.PsecClassStore.size(); i++)
 	  {
+		 /*Direct raw save of data
+		string rawfn = "./Raw_b" + to_string(m_data->TCS.PsecClassStore[i].BoardIndex) + ".txt";
+		ofstream d(rawfn.c_str(), ios::app); 
+		d << m_data->TCS.PsecClassStore[i].FailedReadCounter  << " ";
+		for(unsigned short k: m_data->TCS.PsecClassStore[i].RawWaveform)
+		{
+			d <<  hex <<  k << " ";
+		}
+		d << endl;
+		d.close();
+		*/
 		  
-		  	string rawfn = "./Raw_b" + to_string(m_data->TCS.PsecClassStore[i].BoardIndex) + ".txt";
-			ofstream d(rawfn.c_str(), ios::app); 
-		        d << m_data->TCS.PsecClassStore[i].FailedReadCounter  << " ";
-			for(unsigned short k: m_data->TCS.PsecClassStore[i].RawWaveform)
-			{
-				d <<  hex <<  k << " ";
-			}
-			d << endl;
-			d.close();
+		//fill ParsedStream with vectors from data
+		retval = getParsedData(m_data->TCS.PsecClassStore[i].RawWaveform);
+		if(retval!=0)
+		{
+			std::cout << "Parsing went wrong! " << retval << std::endl;
+		}
+		m_data->TCS.ParsedDataStream.insert(data.begin(),data.end());
 		  
-			//fill ParsedStream with vectors from data
-		  	
-			retval = getParsedData(m_data->TCS.PsecClassStore[i].RawWaveform);
-			if(retval!=0)
-			{
-				std::cout << "Parsing went wrong! " << retval << std::endl;
-			}
-			retval = getParsedMeta(m_data->TCS.PsecClassStore[i].RawWaveform,i);
-			if(retval!=0)
-			{
-				std::cout << "Meta parsing went wrong! " << retval << std::endl;
-			}
-			m_data->TCS.ParsedDataStream.insert(data.begin(),data.end());
-			m_data->TCS.ParsedMetaStream.insert(m_data->TCS.ParsedMetaStream.end(),meta.begin(),meta.end());
-			
+		retval = getParsedMeta(m_data->TCS.PsecClassStore[i].RawWaveform,i);
+		if(retval!=0)
+		{
+			std::cout << "Meta parsing went wrong! " << retval << std::endl;
+		}
+		m_data->TCS.ParsedMetaStream.insert(m_data->TCS.ParsedMetaStream.end(),meta.begin(),meta.end());	
 	  }
   }
 	
+  //Timing
   boost::posix_time::ptime current(boost::posix_time::microsec_clock::local_time());
   boost::posix_time::time_duration dt = current-first;
   m_data->TCS.deltaT.push_back(boost::posix_time::to_simple_string(dt));
+	
   return true;
 }
 
@@ -217,6 +219,12 @@ int DAQ_ParseData::getParsedData(std::vector<unsigned short> buffer)
 	{
 		std::cout << "You tried to parse ACDC data without pulling/setting an ACDC buffer" << std::endl;
 		return -1;
+	}
+	if(buffer.size() == 16)
+	{
+		pps = buffer;
+		data.clear();
+		return -3;	
 	}
 
 	//Prepare the Metadata vector 
