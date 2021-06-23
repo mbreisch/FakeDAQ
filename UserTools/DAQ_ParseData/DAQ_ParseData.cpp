@@ -59,6 +59,7 @@ bool DAQ_ParseData::Execute(){
 		{
 			std::cout << "Parsing went wrong! " << retval << std::endl;
 		}
+		m_data->TCS.ParsedAccStream.insert(m_data->TCS.ParsedAccStream.end(),m_data->TCS.PsecClassStore[i].AccInfoFrame.begin(),m_data->TCS.PsecClassStore[i].AccInfoFrame.end());
 	  }
 	  channel_count = 0;
   }
