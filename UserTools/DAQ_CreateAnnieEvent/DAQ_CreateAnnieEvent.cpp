@@ -14,7 +14,7 @@ bool DAQ_CreateAnnieEvent::Initialise(std::string configfile, DataModel &data){
   if(!m_variables.Get("verbose",m_verbose)) m_verbose=1;
 
   m_variables.Get("path",path);
-  path+= getTime();
+  //path+= getTime();
   m_variables.Get("WaveformLabel",WaveformLabel);
   m_variables.Get("AccLabel",AccLabel);
   m_variables.Get("MetaLabel",MetaLabel);
