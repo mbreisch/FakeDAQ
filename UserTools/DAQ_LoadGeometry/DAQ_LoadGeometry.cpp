@@ -25,12 +25,7 @@ bool DAQ_LoadGeometry::Initialise(std::string configfile, DataModel &data){
 
 bool DAQ_LoadGeometry::Execute(){
   
-  // Make the ANNIEEvent Store if it doesn't exist
-  int recoeventexists = m_data->Stores.count("LAPPD");
-  if(recoeventexists==0)
-  {
-    m_data->Stores["LAPPD"] = new BoostStore(false,2);
-  }
+
   
   return true;
 }
