@@ -88,7 +88,7 @@ bool DAQ_CreateAnnieEvent::Finalise(){
 	BoostStore *indata=new BoostStore(false,2); //this leaks but its jsut for testing
 	indata->Initialise(datapath);
 	std::cout <<"Print indata:"<<std::endl;
-	indata->Print(false);
+	indata->Print(true);
 	long entries;
 	indata->Header->Get("TotalEntries",entries);
 	std::cout <<"entries: "<<entries<<std::endl;
