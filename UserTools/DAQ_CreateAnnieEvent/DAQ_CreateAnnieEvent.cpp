@@ -59,6 +59,9 @@ bool DAQ_CreateAnnieEvent::Execute(){
 		m_data->TCS.ParsedMetaStream.clear();
 		m_data->TCS.ParsedPpsStream.clear();
 		m_data->TCS.ParsedAccStream.clear();
+	}else
+	{
+		std::cout << "Nothing received!" << std::endl;	
 	}
 	return true;
 }
