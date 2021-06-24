@@ -24,6 +24,7 @@ bool PrintParsedData::Execute(){
 	{ 
 		ofstream ofMETA("META.txt");
 		ofstream ofDATA("DATA.txt");
+		ofstream ofACC("ACC.txt");
 		for(int smp=0; smp<256; smp++)
 		{
 			for(int ch=0; ch<30; ch++)
@@ -37,8 +38,15 @@ bool PrintParsedData::Execute(){
 		{
 			ofMETA << std::hex << k << std::endl;
 		}
+		
+		for(unsigned short l: m_data->TCS.ParsedAccStream)	
+		{
+			ofACC << std::hex << l << std::endl;
+		}
+		
 		ofMETA.close();
 		ofDATA.close();
+		ofACC.close();
 	}
 
   	return true;
