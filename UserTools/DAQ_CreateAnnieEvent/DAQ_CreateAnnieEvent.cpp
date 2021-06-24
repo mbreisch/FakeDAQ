@@ -47,12 +47,12 @@ bool DAQ_CreateAnnieEvent::Execute(){
 			}	
 		}
 		
-		m_data->Stores["ANNIEEvent"]->Set(WaveformLabel,LAPPDWaveforms);
-		//m_data->Stores["LAPPD"]->Set(AccLabel,m_data->TCS.ParsedAccStream);
-		m_data->Stores["ANNIEEvent"]->Set(MetaLabel,m_data->TCS.ParsedMetaStream);
-		//m_data->Stores["LAPPD"]->Set(PPSLabel,m_data->TCS.ParsedPpsStream);
-		m_data->Stores["ANNIEEvent"]->Save(path.c_str()); std::cout << "SAVED" << std::endl;	
-		m_data->Stores["ANNIEEvent"]->Delete();
+		m_data->Stores["LAPPD"]->Set(WaveformLabel,LAPPDWaveforms);
+		m_data->Stores["LAPPD"]->Set(AccLabel,m_data->TCS.ParsedAccStream);
+		m_data->Stores["LAPPD"]->Set(MetaLabel,m_data->TCS.ParsedMetaStream);
+		m_data->Stores["LAPPD"]->Set(PPSLabel,m_data->TCS.ParsedPpsStream);
+		m_data->Stores["LAPPD"]->Save(path.c_str()); std::cout << "SAVED" << std::endl;	
+		m_data->Stores["LAPPD"]->Delete();
 			
 		//Cleanup	
 		m_data->TCS.ParsedDataStream.clear();
@@ -68,7 +68,7 @@ bool DAQ_CreateAnnieEvent::Execute(){
 
 
 bool DAQ_CreateAnnieEvent::Finalise(){
-	m_data->Stores["ANNIEEvent"]->Close();
+	m_data->Stores["LAPPD"]->Close();
 	usleep(1000000);
 	std::string datapath = path;
 	BoostStore *indata=new BoostStore(false,2); //this leaks but its jsut for testing
