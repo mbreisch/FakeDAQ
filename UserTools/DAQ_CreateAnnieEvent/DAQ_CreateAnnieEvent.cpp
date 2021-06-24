@@ -47,7 +47,7 @@ bool DAQ_CreateAnnieEvent::Execute(){
 			}	
 		}
 		
-		m_data->Stores["LAPPD"]->Set(WaveformLabel,LAPPDWaveforms);
+		//m_data->Stores["LAPPD"]->Set(WaveformLabel,LAPPDWaveforms);
 		m_data->Stores["LAPPD"]->Set(AccLabel,m_data->TCS.ParsedAccStream);
 		m_data->Stores["LAPPD"]->Set(MetaLabel,m_data->TCS.ParsedMetaStream);
 		m_data->Stores["LAPPD"]->Set(PPSLabel,m_data->TCS.ParsedPpsStream);
