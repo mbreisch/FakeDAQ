@@ -60,15 +60,18 @@ bool DAQ_CreateAnnieEvent::Execute(){
 		m_data->Stores["LAPPD"]->Save(path.c_str()); std::cout << "SAVED" << std::endl;	
 		m_data->Stores["LAPPD"]->Delete();
 			
-		//Cleanup	
-		m_data->TCS.ParsedDataStream.clear();
-		m_data->TCS.ParsedMetaStream.clear();
-		m_data->TCS.ParsedPpsStream.clear();
-		m_data->TCS.ParsedAccStream.clear();
+		
+
 	}else
 	{
 		std::cout << "Nothing received!" << std::endl;	
 	}
+	
+	//Cleanup	
+	m_data->TCS.ParsedDataStream.clear();
+	m_data->TCS.ParsedMetaStream.clear();
+	m_data->TCS.ParsedPpsStream.clear();
+	m_data->TCS.ParsedAccStream.clear();
 	return true;
 }
 
