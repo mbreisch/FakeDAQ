@@ -61,7 +61,7 @@ bool DAQ_CreateAnnieEvent::Execute(){
 		//m_data->Stores["LAPPDStore"]->Set(PPSLabel,m_data->TCS.ParsedPpsStream);
 		m_data->Stores["LAPPDStore"]->Save(path.c_str()); std::cout << "SAVED" << std::endl;	
 		m_data->Stores["LAPPDStore"]->Delete();
-		m_data->Stores["LAPPDStore"]->Header->Get("TotalEntries",entries);	
+		std::cout << m_data->Stores.at("LAPPDStore")->Header->Get("TotalEntries",entries) << "?" << std:endl; 	 
 		
 
 	}else
