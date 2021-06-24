@@ -53,7 +53,7 @@ bool DAQ_CreateAnnieEvent::Execute(){
 			}	
 		}
 		
-		std::cout << "WAVE: " << LAPPDWaveforms.size() << " with " << LAPPDWaveforms[0].size() << "/" << LAPPDWaveforms[0][0].size() << std::endl;
+		std::cout << "WAVE: " << LAPPDWaveforms.size() << " with " << LAPPDWaveforms[0].size() << std::endl;
 		
 		m_data->Stores["LAPPD"]->Set(WaveformLabel,LAPPDWaveforms);
 		m_data->Stores["LAPPD"]->Set(AccLabel,m_data->TCS.ParsedAccStream);
