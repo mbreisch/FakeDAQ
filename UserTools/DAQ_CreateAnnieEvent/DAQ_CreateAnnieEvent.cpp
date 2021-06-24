@@ -26,6 +26,12 @@ bool DAQ_CreateAnnieEvent::Initialise(std::string configfile, DataModel &data){
 
 bool DAQ_CreateAnnieEvent::Execute(){
 
+	std::cout << "WAVE: " << m_data->TCS.ParsedDataStream.size() << " with " << m_data->TCS.ParsedDataStream[0].size() << std::endl;
+	std::cout << "PPS: " << m_data->TCS.ParsedPpsStream.size() << std::endl;
+	std::cout << "ACC: " << m_data->TCS.ParsedAccStream.size() <<  std::endl;
+	std::cout << "Meta: " << m_data->TCS.ParsedMetaStream.size() << std::endl;
+
+	
 	if(m_data->TCS.receiveFlag == 1)
 	{
 		//Prepare temporary vectors
