@@ -19,12 +19,6 @@ bool DAQ_CreateAnnieEvent::Initialise(std::string configfile, DataModel &data){
   m_variables.Get("AccLabel",AccLabel);
   m_variables.Get("MetaLabel",MetaLabel);
   m_variables.Get("PPSLabel",PPSLabel);
-	
-  int recoeventexists = m_data->Stores.count("LAPPD");
-  if(recoeventexists==0)
-  {
-    m_data->Stores["LAPPD"] = new BoostStore(false,2);
-  }
 
   return true;
 }
