@@ -66,7 +66,7 @@ bool DAQ_CreateAnnieEvent::Execute(){
 
 bool DAQ_CreateAnnieEvent::Finalise(){
 	m_data->Stores["LAPPD"]->Close();
-	
+	usleep(100000);
 	std::string datapath = path;
 	BoostStore *indata=new BoostStore(false,2); //this leaks but its jsut for testing
 	indata->Initialise(datapath);
@@ -75,7 +75,7 @@ bool DAQ_CreateAnnieEvent::Finalise(){
 	long entries;
 	indata->Header->Get("TotalEntries",entries);
 	std::cout <<"entries: "<<entries<<std::endl;
-	usleep(100000);
+	
 
 
 	return true;
