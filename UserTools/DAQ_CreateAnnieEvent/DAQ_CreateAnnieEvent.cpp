@@ -80,6 +80,8 @@ bool DAQ_CreateAnnieEvent::Execute(){
 
 bool DAQ_CreateAnnieEvent::Finalise(){
 	m_data->Stores["LAPPD"]->Close();
+	delete m_data->Stores["LAPPD"];
+	m_data->Stores["LAPPD"] = 0;
 	usleep(1000000);
 	std::string datapath = path;
 	BoostStore *indata=new BoostStore(false,2); //this leaks but its jsut for testing
