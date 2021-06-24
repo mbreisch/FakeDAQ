@@ -1,8 +1,8 @@
 DAQ_LoadGeometry DAQ_LoadGeometry configfiles/FakeDAQ/DAQ_LoadGeometryConfig
-DAQ_ScConfig DAQ_ScConfig  configfiles/FakeDAQ/DAQ_ScConfig
-DAQ_SCMonitorReceive DAQ_SCMonitorReceive configfiles/FakeDAQ/DAQ_SCMonitorReceive
+#DAQ_ScConfig DAQ_ScConfig  configfiles/FakeDAQ/DAQ_ScConfig
+#DAQ_SCMonitorReceive DAQ_SCMonitorReceive configfiles/FakeDAQ/DAQ_SCMonitorReceive
 DAQ_AccConfig DAQ_AccConfig  configfiles/FakeDAQ/DAQ_AccConfig
 DAQ_AccDataReceive DAQ_AccDataReceive configfiles/FakeDAQ/DAQ_AccDataReceive
 DAQ_ParseData DAQ_ParseData configfiles/FakeDAQ/DAQ_ParseData
-PrintParsedData PrintParsedData configfiles/FakeDAQ/DummyToolConfig
+#PrintParsedData PrintParsedData configfiles/FakeDAQ/DummyToolConfig
 DAQ_CreateAnnieEvent DAQ_CreateAnnieEvent configfiles/FakeDAQ/DAQ_CreateAnnieEvent
