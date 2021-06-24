@@ -63,7 +63,7 @@ bool DAQ_CreateAnnieEvent::Execute(){
 		m_data->Stores["LAPPDStore"]->Delete();
 		long entries;
 		m_data->Stores.at("LAPPDStore")->Header->Get("TotalEntries",entries);
-		std::cout << entries << "?" << std:endl; 	 
+		std::cout << entries << "?" << std::endl; 	 
 		
 
 	}else
