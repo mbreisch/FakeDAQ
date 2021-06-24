@@ -55,10 +55,10 @@ bool DAQ_CreateAnnieEvent::Execute(){
 		
 		std::cout << "WAVE: " << LAPPDWaveforms.size() << " with " << LAPPDWaveforms[0].size() << std::endl;
 		
-		m_data->Stores["LAPPDStore"]->Set(WaveformLabel,LAPPDWaveforms);
-		m_data->Stores["LAPPDStore"]->Set(AccLabel,m_data->TCS.ParsedAccStream);
+		//m_data->Stores["LAPPDStore"]->Set(WaveformLabel,LAPPDWaveforms);
+		//m_data->Stores["LAPPDStore"]->Set(AccLabel,m_data->TCS.ParsedAccStream);
 		m_data->Stores["LAPPDStore"]->Set(MetaLabel,m_data->TCS.ParsedMetaStream);
-		m_data->Stores["LAPPDStore"]->Set(PPSLabel,m_data->TCS.ParsedPpsStream);
+		//m_data->Stores["LAPPDStore"]->Set(PPSLabel,m_data->TCS.ParsedPpsStream);
 		m_data->Stores["LAPPDStore"]->Save(path.c_str()); std::cout << "SAVED" << std::endl;	
 		m_data->Stores["LAPPDStore"]->Delete();
 			
@@ -88,7 +88,7 @@ bool DAQ_CreateAnnieEvent::Finalise(){
 	BoostStore *indata=new BoostStore(false,2); //this leaks but its jsut for testing
 	indata->Initialise(datapath);
 	std::cout <<"Print indata:"<<std::endl;
-	indata->Print(true);
+	indata->Print(false);
 	long entries;
 	indata->Header->Get("TotalEntries",entries);
 	std::cout <<"entries: "<<entries<<std::endl;
