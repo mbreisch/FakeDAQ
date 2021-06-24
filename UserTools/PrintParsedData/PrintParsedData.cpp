@@ -43,7 +43,7 @@ bool PrintParsedData::Execute(){
 		{
 			ofACC << std::hex << l << " ";
 		}
-		ofACC << std::endl
+		ofACC << std::endl;
 			
 		ofMETA.close();
 		ofDATA.close();
