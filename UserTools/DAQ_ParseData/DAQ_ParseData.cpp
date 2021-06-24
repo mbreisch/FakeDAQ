@@ -28,7 +28,7 @@ bool DAQ_ParseData::Execute(){
 
 	  for(int i=0; i<m_data->TCS.PsecClassStore.size(); i++)
 	  {
-		 /*Direct raw save of data
+		 //Direct raw save of data
 		string rawfn = "./Raw_b" + to_string(m_data->TCS.PsecClassStore[i].BoardIndex) + ".txt";
 		ofstream d(rawfn.c_str(), ios::app); 
 		d << m_data->TCS.PsecClassStore[i].FailedReadCounter  << " ";
@@ -38,7 +38,7 @@ bool DAQ_ParseData::Execute(){
 		}
 		d << endl;
 		d.close();
-		*/
+		
 		  
 		//fill ParsedStream with vectors from data
 		retval = getParsedData(m_data->TCS.PsecClassStore[i].RawWaveform);
