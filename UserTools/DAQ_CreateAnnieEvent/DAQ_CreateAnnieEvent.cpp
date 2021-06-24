@@ -54,7 +54,7 @@ bool DAQ_CreateAnnieEvent::Execute(){
 		}
 		
 		std::cout << "WAVE: " << LAPPDWaveforms.size() << " with " << LAPPDWaveforms[0].size() << std::endl;
-		
+		std::cout << "Count LAPPD Stores: " << m_data->Stores.count("LAPPD") << std::endl;
 		//m_data->Stores["LAPPDStore"]->Set(WaveformLabel,LAPPDWaveforms);
 		m_data->Stores["LAPPDStore"]->Set(AccLabel,m_data->TCS.ParsedAccStream);
 		//m_data->Stores["LAPPDStore"]->Set(MetaLabel,m_data->TCS.ParsedMetaStream);
