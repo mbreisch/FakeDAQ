@@ -74,6 +74,7 @@ bool DAQ_CreateAnnieEvent::Execute(){
 	m_data->TCS.ParsedMetaStream.clear();
 	m_data->TCS.ParsedPpsStream.clear();
 	m_data->TCS.ParsedAccStream.clear();
+	m_data->TCS.PsecClassStore.clear();
 	return true;
 }
 
