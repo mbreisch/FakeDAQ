@@ -1,5 +1,5 @@
 verbose 1
-path /ANNIEEvent
+path ANNIEEvent
 WaveformLabel  RawLAPPDData
 AccLabel AccInfoFrame
 MetaLabel Metadata
