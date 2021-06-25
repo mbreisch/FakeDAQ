@@ -50,6 +50,8 @@ bool DAQ_CreateAnnieEvent::Execute(){
 				}
 				VecTmpWave.push_back(tmpWave);
 				LAPPDWaveforms.insert(LAPPDWaveforms.end(),std::pair<unsigned long, vector<Waveform<double>>>((unsigned long)it->first,VecTmpWave));
+				tmpWave.ClearSamples();
+				VecTmpWave.clear();
 			}	
 		}
 		
@@ -61,6 +63,7 @@ bool DAQ_CreateAnnieEvent::Execute(){
 		//m_data->Stores["LAPPDStore"]->Set(PPSLabel,m_data->TCS.ParsedPpsStream);
 		m_data->Stores["LAPPDStore"]->Save(path.c_str()); std::cout << "SAVED" << std::endl;	
 		m_data->Stores["LAPPDStore"]->Delete(); 
+		LAPPDWaveforms.clear();
 
 	}else
 	{
