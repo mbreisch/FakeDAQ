@@ -25,11 +25,7 @@ bool DAQ_LoadGeometry::Initialise(std::string configfile, DataModel &data){
 
 bool DAQ_LoadGeometry::Execute(){
   
-  int recoeventexists = m_data->Stores.count("LAPPDStore");
-  if(recoeventexists==0)
-  {
-    m_data->Stores["LAPPDStore"] = new BoostStore(false,2);
-  }
+
   
   return true;
 }
