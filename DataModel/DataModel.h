@@ -17,7 +17,7 @@
 #include <SlowControlMonitor.h>
 //ACC classes
 #include <PsecData.h>
-#include <Config.h>
+#include <PsecConfig.h>
 //DAQ classe
 #include <TempClassStore.h>
 #include <Waveform.h>
@@ -58,7 +58,7 @@ class DataModel {
   SlowControlMonitor SCMonitor;
   //ACC
   PsecData psec;
-  Config conf;
+  PsecConfig conf;
   //DAQ
   SlowControlMonitor SCMonitorData;
   TempClassStore TCS;
