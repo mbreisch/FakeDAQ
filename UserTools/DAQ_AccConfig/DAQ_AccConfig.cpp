@@ -63,6 +63,9 @@ bool DAQ_AccConfig::LoadSettings(){
 	string temp;
 
 	m_variables.Get("Triggermode",m_data->conf.triggermode);	
+	
+	m_variables.Get("ResetSwitchACC",m_data->conf.ResetSwitchACC);
+	m_variables.Get("ResetSwitchACDC",m_data->conf.ResetSwitchACDC);
 
 	m_variables.Get("ACC_Sign",m_data->conf.ACC_Sign);
 	m_variables.Get("ACDC_Sign",m_data->conf.ACDC_Sign);
