@@ -8,6 +8,10 @@ Port 6666
 ##Triggermode
 Triggermode 1 #see doc
 
+##Reset
+ResetSwitchACC 0
+ResetSwitchACDC 0
+
 ##ACC settings
 ACC_Sign 0 #normal(0) or inverted(1)
 
