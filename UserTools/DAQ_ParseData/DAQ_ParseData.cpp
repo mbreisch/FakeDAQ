@@ -235,7 +235,7 @@ int DAQ_ParseData::getParsedData(std::vector<unsigned short> buffer)
 	}
 
 	//Prepare the Metadata vector 
-	meta.clear();
+	data.clear();
 
 	//Helpers
 	int DistanceFromZero;
