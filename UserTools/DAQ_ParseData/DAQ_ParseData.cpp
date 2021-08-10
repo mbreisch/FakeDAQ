@@ -175,10 +175,10 @@ int DAQ_ParseData::getParsedMeta(std::vector<unsigned short> buffer, int classin
 	//Fill the psec trigger info map
 	for(int chip=0; chip<NUM_PSEC; chip++)
 	{
-	    for(int ch=0; ch<NUM_CH; ch++)
+	    for(int ch=0; ch<NUM_CH/NUM_PSEC; ch++)
 	    {
 	    	//Find the trigger data at begin + last_metadata_start + 13_info_words + 1_end_word + 1 
-	        bit = buffer.begin() + start_indices[4] + 13 + 1 + 1 + ch + (chip*NUM_CH-1);
+	        bit = buffer.begin() + start_indices[4] + 13 + 1 + 1 + ch + (chip*NUM_CH);
 	        PsecTriggerInfo[chip].push_back(*bit);
 	    }
 	}
@@ -192,7 +192,7 @@ int DAQ_ParseData::getParsedMeta(std::vector<unsigned short> buffer, int classin
 	meta.push_back(m_data->TCS.PsecClassStore[classindex].BoardIndex);
 	for(int CHIP=0; CHIP<NUM_PSEC; CHIP++)
 	{
-		meta.push_back((0xCA00 | CHIP));
+		meta.push_back((0xDCB0 | CHIP));
 		for(int INFOWORD=0; INFOWORD<13; INFOWORD++)
 		{
 			if(CHIP==4 && INFOWORD==7)
