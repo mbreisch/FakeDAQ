@@ -195,17 +195,7 @@ int DAQ_ParseData::getParsedMeta(std::vector<unsigned short> buffer, int classin
 		meta.push_back((0xDCB0 | CHIP));
 		for(int INFOWORD=0; INFOWORD<13; INFOWORD++)
 		{
-			if(CHIP==4 && INFOWORD==7)
-			{
-				meta.push_back(((PsecInfo[CHIP][INFOWORD] & 0xf000)>>12));
-				meta.push_back(((PsecInfo[CHIP][INFOWORD] & 0x800)>>11));
-				meta.push_back(((PsecInfo[CHIP][INFOWORD] & 0x400)>>10));
-				meta.push_back((PsecInfo[CHIP][INFOWORD] & 0x3ff));
-			}else
-			{
-				meta.push_back(PsecInfo[CHIP][INFOWORD]);
-			}
-			
+			meta.push_back(PsecInfo[CHIP][INFOWORD]);		
 		}
 		for(int TRIGGERWORD=0; TRIGGERWORD<6; TRIGGERWORD++)
 		{
