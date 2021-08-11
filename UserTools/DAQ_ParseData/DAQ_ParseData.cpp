@@ -204,7 +204,7 @@ int DAQ_ParseData::getParsedMeta(std::vector<unsigned short> buffer, int classin
 	}
 
 	meta.push_back(CombinedTriggerRateCount);
-
+	meta.push_back(0xeeee);
 	return 0;
 }
 
