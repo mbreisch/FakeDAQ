@@ -1,7 +1,7 @@
 #VersionNumber - gets from model | unsigned int
 
 #Receive flag for set handling
-receiveFlag 1 #int 
+receiveFlag 0 #int 
 
 #To set triggermode
 Triggermode 0 #int
