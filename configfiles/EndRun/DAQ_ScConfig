@@ -1,0 +1,15 @@
+#-------------------COMMS
+verbose 1
+IP 127.0.0.1  #<-----------------This IP is your SC connected RPi, change it!
+Port 4444
+
+#-------------------Slow Control settings
+LV_state_set 1
+HV_state_set 0
+HV_volts 100
+relayCh1 0
+relayCh2 0
+relayCh3 0
+Trig1_threshold 0.5
+Trig0_threshold 1.5
+TrigVref 2.981

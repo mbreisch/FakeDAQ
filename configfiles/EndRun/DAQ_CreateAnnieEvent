@@ -1,0 +1,6 @@
+verbose 9
+path LAPPD
+WaveformLabel  RawLAPPDData
+AccLabel AccInfoFrame
+MetaLabel Metadata
+PPSLabel PPSFrames

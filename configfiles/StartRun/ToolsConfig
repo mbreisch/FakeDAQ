@@ -1,0 +1,8 @@
+DAQ_LoadGeometry DAQ_LoadGeometry configfiles/StartRun/DAQ_LoadGeometryConfig
+#DAQ_ScConfig DAQ_ScConfig  configfiles/StartRun/DAQ_ScConfig
+#DAQ_SCMonitorReceive DAQ_SCMonitorReceive configfiles/StartRun/DAQ_SCMonitorReceive
+DAQ_AccConfig DAQ_AccConfig  configfiles/StartRun/RunStart
+DAQ_AccDataReceive DAQ_AccDataReceive configfiles/StartRun/DAQ_AccDataReceive
+DAQ_ParseData DAQ_ParseData configfiles/StartRun/DAQ_ParseData
+PrintParsedData PrintParsedData configfiles/StartRun/DummyToolConfig
+#DAQ_CreateAnnieEvent DAQ_CreateAnnieEvent configfiles/StartRun/DAQ_CreateAnnieEvent

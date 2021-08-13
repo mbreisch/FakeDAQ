@@ -1,0 +1,49 @@
+#VersionNumber - gets from model | unsigned int
+
+#Receive flag for set handling
+receiveFlag 1 #int 
+
+#To set triggermode
+Triggermode 1 #int
+
+#Signs for different triggermodes
+ACC_sign 0 #int
+ACDC_sign 0 #int
+SELF_sign 0 #int
+
+#Selftrigger coincidence settings
+SELF_Enable_Coincidence 0 #int
+SELF_Coincidence_Number 0 #int
+SELF_threshold 1500 #int
+
+#Mask for connected acdcs
+ACDC_mask 0xFF #unsigned int
+
+#Masks for self trigger channel settings
+PSEC_Chip_Mask_0 0 #int
+PSEC_Chip_Mask_1 0 #int
+PSEC_Chip_Mask_2 0 #int
+PSEC_Chip_Mask_3 0 #int
+PSEC_Chip_Mask_4 0 #int
+PSEC_Channel_Mask_0 0x00 #unsigned int 
+PSEC_Channel_Mask_1 0x00 #unsigned int
+PSEC_Channel_Mask_2 0x00 #unsigned int
+PSEC_Channel_Mask_3 0x00 #unsigned int
+PSEC_Channel_Mask_4 0x00 #unsigned int
+
+#Gated trigger start and length 
+Validation_Start 0 #float
+Validation_Window 100 #float
+
+#Old possible settings for calibration and raw data
+Calibration_Mode 0  #int 
+Raw_Mode 1  #bool
+
+Pedestal_channel 2500 #int
+Pedestal_channel_mask 0x1F #unsigned int
+
+PPSRatio 0x0001 #unsigned int
+PPSBeamMultiplexer 1 #int
+
+ResetSwitchACC 0 #int 
+ResetSwitchACDC 0 #int 
