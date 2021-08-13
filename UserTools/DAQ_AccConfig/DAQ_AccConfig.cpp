@@ -109,8 +109,8 @@ bool DAQ_AccConfig::LoadSettings(){
 	m_variables.Get("PPS_Ratio",temp);
 	m_data->conf.PPSRatio = std::stoul(temp,nullptr,16);
 	m_variables.Get("PPS_Mux",m_data->conf.PPSBeamMultiplexer);
-
-	m_data->conf.receiveFlag=1;
+	
+	m_variables.Get("receiveFlag",m_data->conf.receiveFlag);
 
   return true;
 }
