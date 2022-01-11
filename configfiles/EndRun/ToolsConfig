@@ -1,8 +1,1 @@
-DAQ_LoadGeometry DAQ_LoadGeometry configfiles/EndRun/DAQ_LoadGeometryConfig
-#DAQ_ScConfig DAQ_ScConfig  configfiles/EndRun/DAQ_ScConfig
-#DAQ_SCMonitorReceive DAQ_SCMonitorReceive configfiles/EndRun/DAQ_SCMonitorReceive
 DAQ_AccConfig DAQ_AccConfig  configfiles/EndRun/RunEnd
-DAQ_AccDataReceive DAQ_AccDataReceive configfiles/EndRun/DAQ_AccDataReceive
-DAQ_ParseData DAQ_ParseData configfiles/EndRun/DAQ_ParseData
-PrintParsedData PrintParsedData configfiles/EndRun/DummyToolConfig
-#DAQ_CreateAnnieEvent DAQ_CreateAnnieEvent configfiles/EndRun/DAQ_CreateAnnieEvent
