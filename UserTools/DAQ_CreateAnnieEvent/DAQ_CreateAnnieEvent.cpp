@@ -21,68 +21,50 @@ bool DAQ_CreateAnnieEvent::Initialise(std::string configfile, DataModel &data){
   }
 
   m_variables.Get("path",path);
-  //path+= getTime();
+  path+= getTime();
   m_variables.Get("WaveformLabel",WaveformLabel);
   m_variables.Get("AccLabel",AccLabel);
-  m_variables.Get("MetaLabel",MetaLabel);
-  m_variables.Get("PPSLabel",PPSLabel);
-
+  m_variables.Get("BoardsLabel",BoardsLabel);
+  m_variables.Get("ErrorLabel",ErrorLabel);
+  m_variables.Get("FailLabel",FailLabel);
+  
   return true;
 }
 
 
 bool DAQ_CreateAnnieEvent::Execute(){
 
-	std::cout << "RAW: " << m_data->TCS.ParsedDataStream.size() << " with " << m_data->TCS.ParsedDataStream[0].size() << std::endl;
-	std::cout << "PPS: " << m_data->TCS.ParsedPpsStream.size() << std::endl;
-	std::cout << "ACC: " << m_data->TCS.ParsedAccStream.size() <<  std::endl;
-	std::cout << "Meta: " << m_data->TCS.ParsedMetaStream.size() << std::endl;
-
+	std::cout << "RAW: " << m_data->PsecData.RawWaveform.size() << std::endl;
+	std::cout << "ACC: " << m_data->PsecData.AccInfoFrame.size() << std::endl;
+	std::cout << "Number of Boards: " << m_data->PsecData.BoardIndex.size() << std::endl;
+	std::cout << "Errorcodes: " << m_data->PsecData.errorcodes.size() << " (1 is ok if it's 0x0) " << std::endl;
+	if(m_data->PsecData.errorcodes.size()==1)
+	{
+		printf("Error is 0x%08x\n", m_data->PsecData.errorcodes[0]);
+	}
+	std::cout << "Number of failed reads: " << m_data->PsecData.FailedReadCounter << std::endl;
 	
 	if(m_data->TCS.receiveFlag == 1)
 	{
-		//Prepare temporary vectors
-		std::map<unsigned long, vector<Waveform<double>>> LAPPDWaveforms;
-		Waveform<double> tmpWave;
-		vector<Waveform<double>> VecTmpWave;
-		
-		if(m_data->TCS.ParsedPpsStream.size() == 0)
-		{	
-			//Loop over data stream
-			for(std::map<int, vector<unsigned short>>::iterator it=m_data->TCS.ParsedDataStream.begin(); it!=m_data->TCS.ParsedDataStream.end(); ++it)
-			{
-				for(unsigned short k: it->second)
-				{
-					tmpWave.PushSample((double)k);
-				}
-				VecTmpWave.push_back(tmpWave);
-				LAPPDWaveforms.insert(LAPPDWaveforms.end(),std::pair<unsigned long, vector<Waveform<double>>>((unsigned long)it->first,VecTmpWave));
-				tmpWave.ClearSamples();
-				VecTmpWave.clear();
-			}	
-		}
-		
-		std::cout << "WAVE: " << LAPPDWaveforms.size() << " with " << LAPPDWaveforms[0].size() << std::endl;
 		std::cout << "Count LAPPD Stores: " << m_data->Stores.count("LAPPDStore") << std::endl;
-		m_data->Stores["LAPPDStore"]->Set(WaveformLabel,LAPPDWaveforms);
-		m_data->Stores["LAPPDStore"]->Set(AccLabel,m_data->TCS.ParsedAccStream);
-		m_data->Stores["LAPPDStore"]->Set(MetaLabel,m_data->TCS.ParsedMetaStream);
-		m_data->Stores["LAPPDStore"]->Set(PPSLabel,m_data->TCS.ParsedPpsStream);
-		m_data->Stores["LAPPDStore"]->Save(path.c_str()); std::cout << "SAVED" << std::endl;	
+		m_data->Stores["LAPPDStore"]->Set(WaveformLabel,m_data->PsecData.RawWaveform);
+		m_data->Stores["LAPPDStore"]->Set(AccLabel,m_data->PsecData.AccInfoFrame);
+		m_data->Stores["LAPPDStore"]->Set(BoardsLabel,m_data->PsecData.BoardIndex);
+		m_data->Stores["LAPPDStore"]->Set(ErrorLabel,m_data->PsecData.errorcodes);
+		m_data->Stores["LAPPDStore"]->Set(FailLabel,m_data->PsecData.FailedReadCounter);
+		m_data->Stores["LAPPDStore"]->Save(path.c_str()); 
+		std::cout << "SAVED" << std::endl;	
 		m_data->Stores["LAPPDStore"]->Delete(); 
-		LAPPDWaveforms.clear();
-
 	}else
 	{
 		std::cout << "Nothing received!" << std::endl;	
 	}
 	
 	//Cleanup	
-	m_data->TCS.ParsedDataStream.clear();
-	m_data->TCS.ParsedMetaStream.clear();
-	m_data->TCS.ParsedPpsStream.clear();
-	m_data->TCS.ParsedAccStream.clear();
-	m_data->TCS.PsecClassStore.clear();
+	m_data->PsecData.RawWaveform.clear();
+	m_data->PsecData.AccInfoFrame.clear();
+	m_data->PsecData.BoardIndex.clear();
+	m_data->PsecData.errorcodes.clear();
 	return true;
 }
 
@@ -101,7 +83,5 @@ bool DAQ_CreateAnnieEvent::Finalise(){
 	indata->Header->Get("TotalEntries",entries);
 	std::cout <<"entries: "<<entries<<std::endl;
 	
-
-
 	return true;
 }
