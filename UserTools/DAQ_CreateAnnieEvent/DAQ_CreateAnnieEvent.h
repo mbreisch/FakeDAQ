@@ -35,8 +35,9 @@ class DAQ_CreateAnnieEvent: public Tool {
   string path;
   string WaveformLabel;
   string AccLabel;
-  string MetaLabel;
-  string PPSLabel;
+  string BoardsLabel;
+  string FailLabel;
+  string ErrorLabel;
 
  string getTime()
  {
