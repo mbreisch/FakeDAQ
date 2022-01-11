@@ -35,9 +35,9 @@ bool DAQ_AccConfig::Initialise(std::string configfile, DataModel &data){
   zmq::poll(&items[0], 1, -1);
   
   if ((items [0].revents & ZMQ_POLLOUT)) {
-    m_data->conf.Send(ConfigSend);
+    m_data->PConf.Send(ConfigSend);
     std::cout<<"Sending LAPPD start config variables"<<std::endl;
-    m_data->conf.Print();
+    m_data->PConf.Print();
   }
 
   return true;
@@ -62,56 +62,56 @@ bool DAQ_AccConfig::Finalise(){
 bool DAQ_AccConfig::LoadSettings(){
 	string temp;
 
-	m_variables.Get("Triggermode",m_data->conf.triggermode);	
+	m_variables.Get("Triggermode",m_data->PConf.triggermode);	
 	
-	m_variables.Get("ResetSwitchACC",m_data->conf.ResetSwitchACC);
-	m_variables.Get("ResetSwitchACDC",m_data->conf.ResetSwitchACDC);
+	m_variables.Get("ResetSwitchACC",m_data->PConf.ResetSwitchACC);
+	m_variables.Get("ResetSwitchACDC",m_data->PConf.ResetSwitchACDC);
 
 	m_variables.Get("SMA",SMA);
-	m_variables.Get("ACC_Sign",m_data->conf.ACC_Sign);
-	m_variables.Get("ACDC_Sign",m_data->conf.ACDC_Sign);
-	m_variables.Get("SELF_Sign",m_data->conf.SELF_Sign);
+	m_variables.Get("ACC_Sign",m_data->PConf.ACC_Sign);
+	m_variables.Get("ACDC_Sign",m_data->PConf.ACDC_Sign);
+	m_variables.Get("SELF_Sign",m_data->PConf.SELF_Sign);
 
-	m_variables.Get("SELF_Enable_Coincidence",m_data->conf.SELF_Enable_Coincidence);
-	m_variables.Get("SELF_Coincidence_Number",m_data->conf.SELF_Coincidence_Number);
-	m_variables.Get("SELF_threshold",m_data->conf.SELF_threshold);
+	m_variables.Get("SELF_Enable_Coincidence",m_data->PConf.SELF_Enable_Coincidence);
+	m_variables.Get("SELF_Coincidence_Number",m_data->PConf.SELF_Coincidence_Number);
+	m_variables.Get("SELF_threshold",m_data->PConf.SELF_threshold);
 
-	m_variables.Get("PSEC_Chip_Mask_0",m_data->conf.PSEC_Chip_Mask_0);
-	m_variables.Get("PSEC_Chip_Mask_1",m_data->conf.PSEC_Chip_Mask_1);
-	m_variables.Get("PSEC_Chip_Mask_2",m_data->conf.PSEC_Chip_Mask_2);
-	m_variables.Get("PSEC_Chip_Mask_3",m_data->conf.PSEC_Chip_Mask_3);
-	m_variables.Get("PSEC_Chip_Mask_4",m_data->conf.PSEC_Chip_Mask_4);
+	m_variables.Get("PSEC_Chip_Mask_0",m_data->PConf.PSEC_Chip_Mask_0);
+	m_variables.Get("PSEC_Chip_Mask_1",m_data->PConf.PSEC_Chip_Mask_1);
+	m_variables.Get("PSEC_Chip_Mask_2",m_data->PConf.PSEC_Chip_Mask_2);
+	m_variables.Get("PSEC_Chip_Mask_3",m_data->PConf.PSEC_Chip_Mask_3);
+	m_variables.Get("PSEC_Chip_Mask_4",m_data->PConf.PSEC_Chip_Mask_4);
 
 	
 	m_variables.Get("PSEC_Channel_Mask_0",temp);
-	m_data->conf.PSEC_Channel_Mask_0 = std::stoul(temp,nullptr,16);
+	m_data->PConf.PSEC_Channel_Mask_0 = std::stoul(temp,nullptr,16);
 	m_variables.Get("PSEC_Channel_Mask_1",temp);
-	m_data->conf.PSEC_Channel_Mask_1 = std::stoul(temp,nullptr,16);
+	m_data->PConf.PSEC_Channel_Mask_1 = std::stoul(temp,nullptr,16);
 	m_variables.Get("PSEC_Channel_Mask_2",temp);
-	m_data->conf.PSEC_Channel_Mask_2 = std::stoul(temp,nullptr,16);
+	m_data->PConf.PSEC_Channel_Mask_2 = std::stoul(temp,nullptr,16);
 	m_variables.Get("PSEC_Channel_Mask_3",temp);
-	m_data->conf.PSEC_Channel_Mask_3 = std::stoul(temp,nullptr,16);
+	m_data->PConf.PSEC_Channel_Mask_3 = std::stoul(temp,nullptr,16);
 	m_variables.Get("PSEC_Channel_Mask_4",temp);
-	m_data->conf.PSEC_Channel_Mask_4 = std::stoul(temp,nullptr,16);	
+	m_data->PConf.PSEC_Channel_Mask_4 = std::stoul(temp,nullptr,16);	
 
-	m_variables.Get("Validation_Start",m_data->conf.Validation_Start);
-	m_variables.Get("Validation_Window",m_data->conf.Validation_Window);
+	m_variables.Get("Validation_Start",m_data->PConf.Validation_Start);
+	m_variables.Get("Validation_Window",m_data->PConf.Validation_Window);
 
-	m_variables.Get("Pedestal_channel",m_data->conf.Pedestal_channel);
+	m_variables.Get("Pedestal_channel",m_data->PConf.Pedestal_channel);
 	m_variables.Get("Pedestal_channel_mask",temp);
-	m_data->conf.Pedestal_channel_mask = std::stoul(temp,nullptr,16);
+	m_data->PConf.Pedestal_channel_mask = std::stoul(temp,nullptr,16);
 
 	m_variables.Get("ACDC_mask",temp);
-	m_data->conf.ACDC_mask = std::stoul(temp,nullptr,16);		
+	m_data->PConf.ACDC_mask = std::stoul(temp,nullptr,16);		
 
-	m_variables.Get("Calibration_Mode",m_data->conf.Calibration_Mode);
-	m_variables.Get("Raw_Mode",m_data->conf.Raw_Mode);	
+	m_variables.Get("Calibration_Mode",m_data->PConf.Calibration_Mode);
+	m_variables.Get("Raw_Mode",m_data->PConf.Raw_Mode);	
 
 	m_variables.Get("PPS_Ratio",temp);
-	m_data->conf.PPSRatio = std::stoul(temp,nullptr,16);
-	m_variables.Get("PPS_Mux",m_data->conf.PPSBeamMultiplexer);
+	m_data->PConf.PPSRatio = std::stoul(temp,nullptr,16);
+	m_variables.Get("PPS_Mux",m_data->PConf.PPSBeamMultiplexer);
 	
-	m_variables.Get("receiveFlag",m_data->conf.receiveFlag);
+	m_variables.Get("receiveFlag",m_data->PConf.receiveFlag);
 
   return true;
 }
