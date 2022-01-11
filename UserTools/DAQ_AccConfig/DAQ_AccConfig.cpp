@@ -67,7 +67,6 @@ bool DAQ_AccConfig::LoadSettings(){
 	m_variables.Get("ResetSwitchACC",m_data->PConf.ResetSwitchACC);
 	m_variables.Get("ResetSwitchACDC",m_data->PConf.ResetSwitchACDC);
 
-	m_variables.Get("SMA",SMA);
 	m_variables.Get("ACC_Sign",m_data->PConf.ACC_Sign);
 	m_variables.Get("ACDC_Sign",m_data->PConf.ACDC_Sign);
 	m_variables.Get("SELF_Sign",m_data->PConf.SELF_Sign);
