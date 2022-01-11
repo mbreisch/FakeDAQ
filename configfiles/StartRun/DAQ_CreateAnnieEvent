@@ -1,6 +1,7 @@
 verbose 9
-path LAPPD
+path ./Results/LAPPD
 WaveformLabel  RawLAPPDData
 AccLabel AccInfoFrame
-MetaLabel Metadata
-PPSLabel PPSFrames
+BoardsLabel ReadBoards
+ErrorLabel Errorcodes
+FailLabel FailedReadAttempts
