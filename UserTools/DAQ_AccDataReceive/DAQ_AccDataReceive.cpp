@@ -40,18 +40,16 @@ bool DAQ_AccDataReceive::Execute(){
 
   zmq::poll(&items[0], 1, 100);
   
-  if ((items [0].revents & ZMQ_POLLIN)) {
-    
-  	m_data->TCS.PsecClassStore[rec_counter].Receive(DataReceive);
-  	m_data->TCS.PsecClassStore[rec_counter].Print();
+  if ((items [0].revents & ZMQ_POLLIN)) 
+  {
+  	m_data->PsecData.Receive(DataReceive);
+  	m_data->PsecData.Print();
   
-
-  	if((m_data->TCS.PsecClassStore[rec_counter].RawWaveform.size() == 7795 || m_data->TCS.PsecClassStore[rec_counter].RawWaveform.size() == 16) && m_data->TCS.PsecClassStore[rec_counter].AccInfoFrame.size() == 32)
+  	if((m_data->PsecData.RawWaveform.size()%7795 == 0 || m_data->PsecData.RawWaveform.size()%16 == 0 ) && m_data->PsecData.AccInfoFrame.size() == 32)
   	{
   		m_data->TCS.receiveFlag = 1;
   	}
     std::cout<<"Received LAPPD Data"<<std::endl;
-    rec_counter++;
   }
 
 
