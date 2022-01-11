@@ -53,8 +53,8 @@ class DataModel {
   zmq::context_t* context; ///< ZMQ contex used for producing zmq sockets for inter thread,  process, or computer communication
 
   //ACC
-  PsecData PsecData;
-  PsecConfig conf;
+  PsecData PData;
+  PsecConfig PConf;
   //DAQ
   TempClassStore TCS;
 
