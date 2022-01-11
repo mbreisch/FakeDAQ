@@ -13,14 +13,12 @@
 #include "Utilities.h"
 #include <zmq.hpp>
 
-//SC classes
-#include <SlowControlMonitor.h>
 //ACC classes
 #include <PsecData.h>
 #include <PsecConfig.h>
 //DAQ classe
-#include <TempClassStore.h>
 #include <Waveform.h>
+#include <TCS.h>
 
 
 /**
@@ -54,13 +52,10 @@ class DataModel {
 
   zmq::context_t* context; ///< ZMQ contex used for producing zmq sockets for inter thread,  process, or computer communication
 
-  //SC
-  SlowControlMonitor SCMonitor;
   //ACC
-  PsecData psec;
+  PsecData PsecData;
   PsecConfig conf;
   //DAQ
-  SlowControlMonitor SCMonitorData;
   TempClassStore TCS;
 
  private:
