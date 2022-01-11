@@ -12,6 +12,13 @@ bool DAQ_CreateAnnieEvent::Initialise(std::string configfile, DataModel &data){
   m_log= m_data->Log;
 
   if(!m_variables.Get("verbose",m_verbose)) m_verbose=1;
+	
+  // Make the ANNIEEvent Store if it doesn't exist
+  int recoeventexists = m_data->Stores.count("LAPPDStore");
+  if(recoeventexists==0)
+  {
+    m_data->Stores["LAPPDStore"] = new BoostStore(false,2);
+  }
 
   m_variables.Get("path",path);
   //path+= getTime();
