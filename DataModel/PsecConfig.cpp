@@ -284,7 +284,7 @@ bool PsecConfig::Print(){
   printf("Coincidence Mode: %i\n", SELF_Enable_Coincidence);
   printf("Required Coincidence Channels: %d\n", SELF_Coincidence_Number);
   printf("Selftrigger threshold: %d\n", SELF_threshold);
-  printf("Validation trigger window: %f ns\n", Validation_Start);
+  printf("Validation trigger start: %f ns\n", Validation_Start);
   printf("Validation trigger window: %f ns\n", Validation_Window);
   std::cout << "------------------PSEC settings------------------" << std::endl;
   printf("PSEC chipmask (chip 0 to 4) : %i|%i|%i|%i|%i\n",PSEC_Chip_Mask_0,PSEC_Chip_Mask_1,PSEC_Chip_Mask_2,PSEC_Chip_Mask_3,PSEC_Chip_Mask_4);
