@@ -6,6 +6,9 @@ receiveFlag 0 #int
 #To set triggermode
 Triggermode 0 #int
 
+#Invalid
+SMA 0
+
 #Signs for different triggermodes
 ACC_sign 0 #int
 ACDC_sign 0 #int
@@ -31,7 +34,7 @@ PSEC_Channel_Mask_2 0x00 #unsigned int
 PSEC_Channel_Mask_3 0x00 #unsigned int
 PSEC_Channel_Mask_4 0x00 #unsigned int
 
-#Gated trigger start and length 
+#Gated trigger start and length in ns from 0 to 819000
 Validation_Start 0 #float
 Validation_Window 100 #float
 
