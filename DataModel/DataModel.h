@@ -18,7 +18,7 @@
 #include <PsecConfig.h>
 //DAQ classe
 #include <Waveform.h>
-#include <TCS.h>
+#include <TempClassStore.h>
 
 
 /**
