@@ -24,17 +24,18 @@ class PsecData{
   vector<string> timevec;
  
   //Received data from the ACC class
-  map<int, vector<unsigned short>> ReceiveData;
-  map<int, vector<unsigned short>> map_acdcIF;
+  vector<unsigned short> ReceiveData;
+  //map<int, vector<unsigned short>> map_acdcIF;
   vector<unsigned int> errorcodes;
 
   //To send data 
-  int BoardIndex;
-  unsigned int VersionNumber = 0x0001;
+  vector<int> BoardIndex;
+  unsigned int VersionNumber = 0x0002;
   vector<unsigned short> AccInfoFrame;
   vector<unsigned short> RawWaveform;
   //vector<unsigned short> AcdcInfoFrame;
   int FailedReadCounter=0;
+ 
 
   int readRetval;
 
@@ -51,6 +52,7 @@ class PsecData{
   //ar & AcdcInfoFrame;
   ar & FailedReadCounter;
   ar & errorcodes;
+  
  }
 
  
