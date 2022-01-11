@@ -34,24 +34,24 @@ bool DAQ_CreateAnnieEvent::Initialise(std::string configfile, DataModel &data){
 
 bool DAQ_CreateAnnieEvent::Execute(){
 
-	std::cout << "RAW: " << m_data->PsecData.RawWaveform.size() << std::endl;
-	std::cout << "ACC: " << m_data->PsecData.AccInfoFrame.size() << std::endl;
-	std::cout << "Number of Boards: " << m_data->PsecData.BoardIndex.size() << std::endl;
-	std::cout << "Errorcodes: " << m_data->PsecData.errorcodes.size() << " (1 is ok if it's 0x0) " << std::endl;
-	if(m_data->PsecData.errorcodes.size()==1)
+	std::cout << "RAW: " << m_data->PData.RawWaveform.size() << std::endl;
+	std::cout << "ACC: " << m_data->PData.AccInfoFrame.size() << std::endl;
+	std::cout << "Number of Boards: " << m_data->PData.BoardIndex.size() << std::endl;
+	std::cout << "Errorcodes: " << m_data->PData.errorcodes.size() << " (1 is ok if it's 0x0) " << std::endl;
+	if(m_data->PData.errorcodes.size()==1)
 	{
-		printf("Error is 0x%08x\n", m_data->PsecData.errorcodes[0]);
+		printf("Error is 0x%08x\n", m_data->PData.errorcodes[0]);
 	}
-	std::cout << "Number of failed reads: " << m_data->PsecData.FailedReadCounter << std::endl;
+	std::cout << "Number of failed reads: " << m_data->PData.FailedReadCounter << std::endl;
 	
 	if(m_data->TCS.receiveFlag == 1)
 	{
 		std::cout << "Count LAPPD Stores: " << m_data->Stores.count("LAPPDStore") << std::endl;
-		m_data->Stores["LAPPDStore"]->Set(WaveformLabel,m_data->PsecData.RawWaveform);
-		m_data->Stores["LAPPDStore"]->Set(AccLabel,m_data->PsecData.AccInfoFrame);
-		m_data->Stores["LAPPDStore"]->Set(BoardsLabel,m_data->PsecData.BoardIndex);
-		m_data->Stores["LAPPDStore"]->Set(ErrorLabel,m_data->PsecData.errorcodes);
-		m_data->Stores["LAPPDStore"]->Set(FailLabel,m_data->PsecData.FailedReadCounter);
+		m_data->Stores["LAPPDStore"]->Set(WaveformLabel,m_data->PData.RawWaveform);
+		m_data->Stores["LAPPDStore"]->Set(AccLabel,m_data->PData.AccInfoFrame);
+		m_data->Stores["LAPPDStore"]->Set(BoardsLabel,m_data->PData.BoardIndex);
+		m_data->Stores["LAPPDStore"]->Set(ErrorLabel,m_data->PData.errorcodes);
+		m_data->Stores["LAPPDStore"]->Set(FailLabel,m_data->PData.FailedReadCounter);
 		m_data->Stores["LAPPDStore"]->Save(path.c_str()); 
 		std::cout << "SAVED" << std::endl;	
 		m_data->Stores["LAPPDStore"]->Delete(); 
@@ -61,10 +61,10 @@ bool DAQ_CreateAnnieEvent::Execute(){
 	}
 	
 	//Cleanup	
-	m_data->PsecData.RawWaveform.clear();
-	m_data->PsecData.AccInfoFrame.clear();
-	m_data->PsecData.BoardIndex.clear();
-	m_data->PsecData.errorcodes.clear();
+	m_data->PData.RawWaveform.clear();
+	m_data->PData.AccInfoFrame.clear();
+	m_data->PData.BoardIndex.clear();
+	m_data->PData.errorcodes.clear();
 	return true;
 }
 
