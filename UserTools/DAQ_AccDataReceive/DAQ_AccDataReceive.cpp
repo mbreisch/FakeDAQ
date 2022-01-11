@@ -42,10 +42,10 @@ bool DAQ_AccDataReceive::Execute(){
   
   if ((items [0].revents & ZMQ_POLLIN)) 
   {
-  	m_data->PsecData.Receive(DataReceive);
-  	m_data->PsecData.Print();
+  	m_data->PData.Receive(DataReceive);
+  	m_data->PData.Print();
   
-  	if((m_data->PsecData.RawWaveform.size()%7795 == 0 || m_data->PsecData.RawWaveform.size()%16 == 0 ) && m_data->PsecData.AccInfoFrame.size() == 32)
+  	if((m_data->PData.RawWaveform.size()%7795 == 0 || m_data->PData.RawWaveform.size()%16 == 0 ) && m_data->PData.AccInfoFrame.size() == 32)
   	{
   		m_data->TCS.receiveFlag = 1;
   	}
