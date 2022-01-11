@@ -18,7 +18,7 @@ class PsecConfig : public SerialisableObject{
   bool Send(zmq::socket_t* sock);
   bool Receive(zmq::socket_t* sock);
  
-  unsigned int VersionNumber = 0x0001;
+  unsigned int VersionNumber = 0x0002;
   int receiveFlag = 0;
 
   //Reset switch
