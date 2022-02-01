@@ -1,3 +1,8 @@
+#-------------------COMMS
+verbose 1
+IP 127.0.0.1  #<-----------------This IP is your ACC connected RPi, change it!
+Port 6666
+
 #VersionNumber - gets from model | unsigned int
 
 #Receive flag for set handling
