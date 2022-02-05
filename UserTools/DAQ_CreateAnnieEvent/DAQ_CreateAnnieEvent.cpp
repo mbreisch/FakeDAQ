@@ -8,6 +8,7 @@ bool DAQ_CreateAnnieEvent::Initialise(std::string configfile, DataModel &data){
   if(configfile!="")  m_variables.Initialise(configfile);
   //m_variables.Print();
 
+  system("mkdir -p Results");
   m_data= &data;
   m_log= m_data->Log;
 
