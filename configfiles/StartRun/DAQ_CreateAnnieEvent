@@ -1,6 +1,6 @@
 verbose 9
 path ./Results/LAPPD
-WaveformLabel  RawLAPPDData
+WaveformLabel  RawLAPPDDataFrame
 AccLabel AccInfoFrame
 BoardsLabel ReadBoards
 ErrorLabel Errorcodes
