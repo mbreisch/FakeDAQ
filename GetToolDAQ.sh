@@ -95,8 +95,8 @@ cd ToolDAQ
 
 if [ $tooldaq -eq 1 ]
 then
-
-git clone https://github.com/ToolDAQ/ToolDAQFramework.git
+unzip ToolDAQFramework.zip -d ./ToolDAQ/
+#git clone https://github.com/ToolDAQ/ToolDAQFramework.git
 fi
 
 if [ $zmq -eq 1 ]
