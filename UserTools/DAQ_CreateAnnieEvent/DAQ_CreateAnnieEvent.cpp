@@ -15,6 +15,12 @@ bool DAQ_CreateAnnieEvent::Initialise(std::string configfile, DataModel &data){
   if(!m_variables.Get("verbose",m_verbose)) m_verbose=1;
 	
   // Make the ANNIEEvent Store if it doesn't exist
+  int recoeventexists = m_data->Stores.count("ANNIEEvent");
+  if(recoeventexists==0)
+  {
+    m_data->Stores["ANNIEEvent"] = new BoostStore(false,0);
+  }
+  // Make the LAPPD Store if it doesn't exist	
   int recoeventexists = m_data->Stores.count("LAPPDStore");
   if(recoeventexists==0)
   {
@@ -53,9 +59,11 @@ bool DAQ_CreateAnnieEvent::Execute(){
 		m_data->Stores["LAPPDStore"]->Set(BoardsLabel,m_data->PData.BoardIndex);
 		m_data->Stores["LAPPDStore"]->Set(ErrorLabel,m_data->PData.errorcodes);
 		m_data->Stores["LAPPDStore"]->Set(FailLabel,m_data->PData.FailedReadCounter);
-		m_data->Stores["LAPPDStore"]->Save(path.c_str()); 
+		m_data->Stores["ANNIEEvent"]->Set("LAPPDStore",m_data->Stores["LAPPDStore"]);
+		m_data->Stores["ANNIEEvent"]->Save(path.c_str()); 
 		std::cout << "SAVED" << std::endl;	
 		m_data->Stores["LAPPDStore"]->Delete(); 
+		m_data->Stores["ANNIEEvent"]->Delete();
 	}else
 	{
 		std::cout << "Nothing received!" << std::endl;	
@@ -74,6 +82,9 @@ bool DAQ_CreateAnnieEvent::Finalise(){
 	m_data->Stores["LAPPDStore"]->Close();
 	delete m_data->Stores["LAPPDStore"];
 	m_data->Stores["LAPPDStore"] = 0;
+	m_data->Stores["ANNIEEvent"]->Close();
+	delete m_data->Stores["ANNIEEvent"];
+	m_data->Stores["ANNIEEvent"] = 0;
 	usleep(1000000);
 	std::string datapath = path;
 	BoostStore *indata=new BoostStore(false,2); //this leaks but its jsut for testing
