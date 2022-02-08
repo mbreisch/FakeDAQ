@@ -21,7 +21,7 @@ bool DAQ_CreateAnnieEvent::Initialise(std::string configfile, DataModel &data){
     m_data->Stores["ANNIEEvent"] = new BoostStore(false,0);
   }
   // Make the LAPPD Store if it doesn't exist	
-  int recoeventexists = m_data->Stores.count("LAPPDStore");
+  recoeventexists = m_data->Stores.count("LAPPDStore");
   if(recoeventexists==0)
   {
     m_data->Stores["LAPPDStore"] = new BoostStore(false,2);
