@@ -38,7 +38,7 @@ bool DAQ_AccDataReceive::Execute(){
   int rec_counter = 0;
   m_data->TCS.receiveFlag = 0;
 
-  zmq::poll(&items[0], 1, 100);
+  zmq::poll(&items[0], 1, -1);
   
   if ((items [0].revents & ZMQ_POLLIN)) 
   {
